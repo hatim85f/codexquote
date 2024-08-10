@@ -1,16 +1,8 @@
 const mongoose = require("mongoose");
-const isCompanyAdmin = require("../middleware/isCompanyAdmin");
 const Schema = mongoose.Schema;
 
 const UserSchema = Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-  },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: {
+  userName: {
     type: String,
     required: true,
   },
@@ -34,11 +26,10 @@ const UserSchema = Schema({
   },
   projects: {
     type: Array,
-    required: true,
   },
   isCompanyAdmin: {
     type: Boolean,
-    required: true,
+    default: false,
   },
 });
 

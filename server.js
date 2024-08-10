@@ -13,6 +13,8 @@ app.get("/", (req, res) => {
   res.status(200).send("API Running");
 });
 
+app.use("/api/auth", require("./routes/api/auth"));
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
