@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ClientsSchema = Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-  },
   firstName: {
     type: String,
     required: true,
@@ -39,12 +36,21 @@ const ClientsSchema = Schema({
     type: String,
     default: "",
   },
+  companyWebsite: {
+    type: String,
+    default: "",
+  },
   country: {
     type: String,
     required: true,
   },
   position: {
     type: String,
+    required: true,
+  },
+  clientNumber: {
+    type: Number,
+    unique: true,
     required: true,
   },
   projects: {
@@ -73,6 +79,20 @@ const ClientsSchema = Schema({
     type: Date,
     default: Date.now,
   },
+  bankDetails: {
+    bankName: {
+      type: String,
+    },
+    accountNumber: {
+      type: String,
+    },
+    iban: {
+      type: String,
+    },
+    swiftCode: {
+      type: String,
+    },
+  }, // will be needed in future businesses
 });
 
 module.exports = Clients = mongoose.model("clients", ClientsSchema);

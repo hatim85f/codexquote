@@ -31,6 +31,10 @@ const UserSchema = Schema({
     type: Boolean,
     default: false,
   },
+  isFinanceAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = User = mongoose.model("user", UserSchema);

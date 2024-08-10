@@ -1,0 +1,80 @@
+{
+  "clientId": null,
+  "projectTitle": "Shopify Store Creation for Janmarini Skin Research Spain",
+  "projectDescription": "Jan Marini Skin Research is a leading manufacturer of medically validated skin care and aesthetic products for the professional marketplace. The company is known for creating breakthrough product solutions and dramatic technological advancements. Over the years, the company has established a portfolio of proprietary formulas that reflect its ongoing commitment to be the pre-eminent developer of skin care products that produce measurable results and benefits.",
+  "projectType": "Shopify",
+  "projectStartDate": "15/08/2024",
+  "projectPrice": 3500,
+  "discount": 0,
+  "projecturl": "https://janmarini.eur",
+  "clientFirstName": "Anna",
+  "clientLastName": "Rachkevych-Kostyshyn",
+  "clientEmail": "annarachkevychkostyshyn@gmail.com",
+  "clientPhone": "+48 537 024 374",
+  "clientCompanyName": "Beauty Point",
+  "clientCompanyLogo": "https://img.freepik.com/premium-vector/company-logo-with-avatar-design_1465-2.jpg",
+  "clientCompanyWebsite": "https://beautypoint.com",
+  "clientCountry": "Spain",
+  "clientPosition": "Admin",
+  "quotationItems": [
+    {
+      "itemTitle": "Items Description",
+
+      "quantity": 1,
+      "unitPrice": 1500,
+      "discount": 0
+    },
+    {
+      "itemTitle": "Customization",
+
+      "quantity": 1,
+      "unitPrice": 1200,
+      "discount": 0
+    },
+    {
+      "itemTitle": "Point of sales and inventory",
+
+      "quantity": 1,
+      "unitPrice": 800,
+      "discount": 0
+    }
+  ],
+  "totalDiscount": 0,
+  "overview": "We are delighted to offer our services to build a Shopify store. Our goal is to create anelegant, user-friendly online store that showcases your elegant brand. Below are theterms and conditions of our agreement",
+  "overviewItems": [
+    {
+      "itemTitle": "Shopify Store Creation and Support",
+      "description": [
+        "We will build the Shopify store, ensuring it meets all your needs and desiredwebsite flow for pages and categories",
+        "We will provide continuous support throughout the project."
+      ]
+    },
+    {
+      "itemTitle": "Design Selection",
+      "description": ["We will select a suitable design in agreement with you."]
+    },
+    {
+      "itemTitle": "Payment Gateway Integration",
+      "description": ["We will integrate a payment gateway of your choice."]
+    }
+  ],
+  "customerResponsibilities": [
+    "Provide all necessary information and materials for the project",
+    "Provide feedback and approval in a timely manner",
+    "Provide access to the Shopify store"
+  ],
+  "timeLine": 14,
+  "commitments": [
+    "We will deliver the project on time",
+    "We will provide continuous support throughout the project"
+  ],
+  "termsAndConditions": [
+    "This quotation is valid only until August 1st, 2024, and will not be honored after that date",
+    "If you can not provide domain details and credentials for us to integrate them, andif there is a need for us to purchase a new domain and hosting, the customer willbe charged the costs for that.",
+    "Customer will own the copyrights to the content and provided (images,descriptions, etc....)",
+    "We are obliagted to deliver the customer a full access to thier website after wefinish our work.",
+    "We will ensure the website functions as intended but cannot guaranteecompatibility with all third-party plugins or future Shopify updates not done by us.",
+    "We reserve the right to terminate the project if you fail to meet your obligations,such as providing content or payment delays.",
+    "This qutation will considered as a contract once signed by both parties"
+  ]
+}

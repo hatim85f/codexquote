@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ProjectsSchema = Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-  },
   title: {
     type: String,
     required: true,
@@ -34,6 +31,15 @@ const ProjectsSchema = Schema({
     type: Date,
     required: true,
   },
+  projectNumber: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  timeLine: {
+    type: String,
+    required: true,
+  },
   client: {
     type: mongoose.Types.ObjectId,
     ref: "clients",
@@ -46,11 +52,9 @@ const ProjectsSchema = Schema({
     {
       dueDate: {
         type: Date,
-        required: true,
       },
       amount: {
         type: Number,
-        required: true,
       },
     },
   ],

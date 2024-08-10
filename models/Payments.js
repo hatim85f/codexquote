@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const PaymentsSchema = Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-  },
   project: {
     type: mongoose.Types.ObjectId,
     ref: "projects",
@@ -48,6 +45,10 @@ const PaymentsSchema = Schema({
   },
   receiptUrl: {
     type: String,
+  },
+  paymentDescription: {
+    type: String,
+    enum: ["In Advance", "Deposit", "Final Payment", "Partial Payment"],
   },
 });
 

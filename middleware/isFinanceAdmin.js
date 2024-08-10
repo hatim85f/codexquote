@@ -1,6 +1,6 @@
 const User = require("../models/Users");
 
-// Create a middleware function to check if a user is authorized (SuperAdmin or Organizer)
+// Create a middleware function to check if a user is authorized to check financial details
 module.exports = async (req, res, next) => {
   const userId = req.header("user-id");
 
@@ -12,7 +12,7 @@ module.exports = async (req, res, next) => {
   }
 
   const user = await User.findOne({ _id: userId });
-  const isAdmin = user.isCompanyAdmin;
+  const isAdmin = user.isFinanceAdmin;
 
   if (isAdmin) {
     // If the user is authorized, continue to the next middleware/route handler

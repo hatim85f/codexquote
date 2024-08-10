@@ -2,9 +2,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const QuotationsSchema = new Schema({
-  _id: {
-    type: mongoose.Types.ObjectId,
-  },
   quotationNumber: {
     type: String,
     required: true,
@@ -46,13 +43,16 @@ const QuotationsSchema = new Schema({
         required: true,
         min: 0,
       },
-      totalPrice: {
+      discount: {
         type: Number,
-        required: true,
-        min: 0,
+        default: 0,
       },
     },
   ],
+  totalDiscount: {
+    type: Number,
+    default: 0,
+  },
   title: {
     type: String,
     required: true,
@@ -91,10 +91,6 @@ const QuotationsSchema = new Schema({
     type: String,
     required: true,
   },
-  overviewText: {
-    type: String,
-    required: true,
-  },
   overviewItems: [
     {
       itemTitle: {
@@ -102,7 +98,7 @@ const QuotationsSchema = new Schema({
         required: true,
       },
       description: {
-        type: String,
+        type: [String],
         required: true,
       },
     },
@@ -111,13 +107,13 @@ const QuotationsSchema = new Schema({
     type: [String],
     required: true,
   },
-  timeline: {
+  timeLine: {
     type: Number,
     required: true,
     min: 1,
   },
   commitments: {
-    type: String,
+    type: [String],
     required: true,
   },
   termsAndConditions: {
