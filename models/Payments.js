@@ -24,12 +24,12 @@ const PaymentsSchema = Schema({
   paymentMethod: {
     type: String,
     required: true,
-    enum: ["Pending", "Paid", "Failed", "Refunded", "In Progress"],
+    enum: ["Credit Card", "Cash", "Bank Transfer"],
   },
   status: {
     type: String,
     required: true,
-    enum: ["Pending", "Paid"],
+    enum: ["Pending", "Paid", "Confirmed", "Refunded", "Cancelled"],
   },
   transactionId: {
     type: String,
