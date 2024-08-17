@@ -21,6 +21,49 @@ const isCompanyAdmin = require("../../middleware/isCompanyAdmin");
 // we will update the client collection to add the payment id to the client payments array
 // we will update project.amountsPaid array to add the payment id and the amount paid
 
+// @route    POST api/payment
+// @desc     Get one payment
+// @access   Private
+router.get("/:paymentId", isCompanyAdmin, async (req, res) => {
+  try {
+    const paymentId = req.params.paymentId;
+
+    const payment = await Payments.findOne({ _id: paymentId });
+
+    if (!payment) {
+      return res.status(404).send({
+        error: "Not found",
+        message: "Payment was not found. Incorrect id",
+      });
+    }
+    return res.status(200).send(payment);
+  } catch (error) {
+    return res.status(500).send({
+      error: "Server error",
+      message: err.message,
+    });
+  }
+});
+
+// @route    POST api/payment
+// @desc     Get all payments
+// @access   Private
+router.get("/", isCompanyAdmin, async (req, res) => {
+  try {
+    const payments = await Payments.find();
+
+    return res.status(200).send(payments);
+  } catch (error) {
+    return res.status(500).send({
+      error: "Server error",
+      message: err.message,
+    });
+  }
+});
+
+// @route    POST api/payment
+// @desc     Create payment
+// @access   Private
 router.post("/", [auth, isFinanceAdmin], async (req, res) => {
   const {
     project,
@@ -114,6 +157,7 @@ router.post("/", [auth, isFinanceAdmin], async (req, res) => {
         $set: {
           type: status, // This will be either "Confirmed" or "Paid"
           date: parsedDate,
+          invoice: savedInvoice._id,
         },
       };
 
@@ -133,6 +177,59 @@ router.post("/", [auth, isFinanceAdmin], async (req, res) => {
   } catch (error) {
     return res.status(500).send({
       error: "Error",
+      message: error.message,
+    });
+  }
+});
+
+// @route    POST api/payment
+// @desc     Edit payment
+// @access   Private
+router.put("/:paymentId", [auth, isFinanceAdmin], async (req, res) => {
+  const paymentId = req.params.paymentId;
+  const { status, project } = req.body;
+
+  try {
+    const payment = await Payments.findOne({ _id: paymentId });
+    const income = await Income.findOne({ project });
+
+    // Set the amount to either increment or decrement
+    const sign = status === "Paid" || status === "Confirmed" ? 1 : -1;
+
+    // Set the type of income document
+    const type =
+      income.remainingAmount === payment.amount && sign === 1 // If the remaining ammount is 0
+        ? "Paid"
+        : income.paidAmount === payment.amount && sign === -1 // If the paid ammount is 0
+        ? "Possible"
+        : "Confirmed"; // Else
+
+    return res.status(200).send({ sign, type, amount: payment });
+
+    await Income.updateMany(
+      { project },
+      {
+        $inc: {
+          paidAmount: payment.amount * sign,
+          remainingAmount: -(payment.amount * sign),
+        },
+        $set: { type },
+      }
+    );
+
+    await Payments.updateMany(
+      { _id: paymentId },
+      {
+        $set: {
+          status,
+        },
+      }
+    );
+
+    return res.status(200).send({ message: "Payment updated successfully" });
+  } catch (error) {
+    return res.status(500).send({
+      error: "Server error",
       message: error.message,
     });
   }

@@ -28,9 +28,9 @@ const QuotationsSchema = new Schema({
   },
   quotationItems: [
     {
-      itemTitle: {
-        type: String,
-        required: true,
+      service: {
+        type: mongoose.Types.ObjectId,
+        ref: "serviceItems",
       },
       quantity: {
         type: Number,
@@ -38,11 +38,7 @@ const QuotationsSchema = new Schema({
         default: 1,
         min: 1,
       },
-      unitPrice: {
-        type: Number,
-        required: true,
-        min: 0,
-      },
+
       discount: {
         type: Number,
         default: 0,

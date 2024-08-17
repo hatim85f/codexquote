@@ -62,18 +62,8 @@ const ClientsSchema = Schema({
     default: [],
   },
   feedback: {
-    starsNumber: {
-      type: Number,
-      default: 0,
-    },
-    feedbackText: {
-      type: String,
-      default: "",
-    },
-    feedbackTitle: {
-      type: String,
-      default: "",
-    },
+    type: mongoose.Types.ObjectId,
+    ref: "feedback",
   },
   dateCreated: {
     type: Date,

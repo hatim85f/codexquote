@@ -10,30 +10,70 @@ const Payments = require("../../models/Payments");
 const Income = require("../../models/Income");
 const { parseDate } = require("../../helpers/parseDate");
 
-// Youssef Tasks
-
-// we need to create the following functions
-
-// update client password from user side (no isCompanyAdmin validation needed just auth)
-
-// updating user password while logged in
-router.put("/user/password/:clientId", auth, async (req, res) => {
+// @route    POST api/client
+// @desc     Get one client
+// @access   Private
+router.get("/:clientId", isCompanyAdmin, async (req, res) => {
   try {
     const { clientId } = req.params;
-    const { oldPassword, newPassword } = req.body;
 
     const client = await Client.findOne({ _id: clientId });
 
-    // if (!client) {
-    //   return res.status(404).send({
-    //     error: "Not found",
-    //     message: "Client not found",
-    //   });
-    // }
+    if (!client) {
+      return res.status(404).send({
+        error: "Not found",
+        message: "Client was not found. Incorrect id",
+      });
+    }
+    return res.status(200).send(client);
+  } catch (error) {
+    return res.status(500).send({
+      error: "Server error",
+      message: err.message,
+    });
+  }
+});
 
-    // no need to find the client again as we already have the client id from the token
-    // client is already logged
+// @route    POST api/client
+// @desc     Get all clients
+// @access   Private
+router.get("/", isCompanyAdmin, async (req, res) => {
+  try {
+    const clients = await Client.find();
 
+    return res.status(200).send(clients);
+  } catch (error) {
+    return res.status(500).send({
+      error: "Server error",
+      message: err.message,
+    });
+  }
+});
+
+// @route    POST api/client
+// @desc     Change user password
+// @access   Private
+router.put("/user/password/:clientId", auth, async (req, res) => {
+  try {
+    const clientId = req.params.clientId;
+    const { oldPassword, newPassword } = req.body;
+
+    // Check if old and new passwords are the same
+    if (oldPassword === newPassword)
+      return res.status(400).send({
+        error: "Same password",
+        message: `New password can't be the same as old password`,
+      });
+    const client = await Client.findOne({ _id: clientId });
+
+    if (!client) {
+      return res.status(404).send({
+        error: "Not found",
+        message: "Client not found",
+      });
+    }
+
+    // Check if password is correct
     const isMatch =
       client.password === oldPassword ||
       (await bcrypt.compare(oldPassword, client.password));
@@ -45,15 +85,10 @@ router.put("/user/password/:clientId", auth, async (req, res) => {
       });
     }
 
-    if (oldPassword === newPassword)
-      return res.status(400).send({
-        error: "Same password",
-        message: `New password can't be the same as old password`,
-      });
-
+    // Change password
     const salt = await bcrypt.genSalt(10);
 
-    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    hashedPassword = await bcrypt.hash(newPassword, salt);
 
     await Client.updateOne(
       { _id: clientId },
@@ -75,7 +110,9 @@ router.put("/user/password/:clientId", auth, async (req, res) => {
   }
 });
 
-// update client profile from user side (no isCompanyAdmin validation needed just auth)
+// @route    POST api/client
+// @desc     edit user profile from user side
+// @access   Private
 router.put("/profile/:clientId", auth, async (req, res) => {
   try {
     const clientId = req.params.clientId;
@@ -95,15 +132,6 @@ router.put("/profile/:clientId", auth, async (req, res) => {
       bankDetails,
     } = req.body;
 
-    // const client = await Client.findOne({ _id: clientId });
-
-    // if (!client)
-    //   return res.status(404).send({
-    //     error: "Incorrect id",
-    //     message: "Client not found",
-    //   });
-
-    // same comment as previous function
     const updateFields = {};
     if (firstName) updateFields.firstName = firstName;
     if (lastName) updateFields.lastName = lastName;
@@ -196,14 +224,16 @@ router.put("/admin/:clientId", isCompanyAdmin, async (req, res) => {
   }
 });
 
-// delete client from company side (isCompanyAdmin validation needed)
-
+// @route    POST api/client
+// @desc     delete client
+// @access   Private
 router.delete("/:clientId", isCompanyAdmin, async (req, res) => {
   try {
     const clientId = req.params.clientId;
 
     const result = await Client.deleteOne({ _id: clientId });
 
+    // Check if client exists
     if (result.deletedCount === 0) {
       return res.status(404).send({
         error: "Not found",
