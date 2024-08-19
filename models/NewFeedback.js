@@ -38,6 +38,9 @@ const NewFeedbackSchema = Schema({
     type: Number,
     required: true,
   },
+  note: {
+    type: String,
+  },
 });
 
 module.exports = NewFeedback = mongoose.model("newFeedback", NewFeedbackSchema);

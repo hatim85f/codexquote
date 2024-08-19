@@ -13,6 +13,7 @@ router.post("/", async (req, res) => {
     clientPosition,
     imageURL,
     clientRating,
+    note,
   } = req.body;
 
   try {
@@ -26,6 +27,7 @@ router.post("/", async (req, res) => {
       clientPosition,
       imageURL,
       clientRating,
+      note,
     });
 
     await newFeedback.save();
