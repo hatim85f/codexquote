@@ -178,7 +178,11 @@ router.post("/register", async (req, res) => {
 
     jwt.sign(payload, setcretToken, (error, token) => {
       if (error) throw error;
-      res.json({ token, user: newUser });
+      res.json({
+        token,
+        user: newUser,
+        message: "User created and waiting for admins approval",
+      });
     });
   } catch (error) {
     return res.status(500).send({
@@ -321,7 +325,7 @@ router.post("/reset", async (req, res) => {
     if (!reset) {
       return res.status(500).send({
         error: "Error",
-        message: "Invalid reset code",
+        message: "Invalid reset code, or may be expired",
       });
     }
 
