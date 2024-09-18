@@ -35,6 +35,40 @@ router.get("/:email", auth, async (req, res) => {
   }
 });
 
+// @route POST api/auth
+// @desc Authenticate user
+// @access Public
+// return the user and token when user logging in with google or facebook
+
+router.post("/google", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    let user = await Users.findOne({
+      email,
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "User does not exist",
+      });
+    }
+
+    const payload = {
+      user: {
+        id: user._id,
+      },
+    };
+
+    jwt.sign(payload, setcretToken, (error, token) => {
+      if (error) throw error;
+      res.json({ token, user });
+    });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 //@route    POST api/auth
 //@des      Authenticate users and get the token
 //@access   Public
