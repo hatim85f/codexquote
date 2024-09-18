@@ -35,6 +35,10 @@ const UserSchema = Schema({
     type: Boolean,
     default: false,
   },
+  isApproved: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = User = mongoose.model("user", UserSchema);
