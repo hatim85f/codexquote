@@ -9,8 +9,12 @@ const Client = require("../../models/Clients");
 const Payments = require("../../models/Payments");
 const Income = require("../../models/Income");
 const { parseDate } = require("../../helpers/parseDate");
+const Clients = require("../../models/Clients");
+const {
+  formattedNumberWithPadding,
+} = require("../../helpers/formattedNumberWithPadding");
 
-// @route    POST api/client
+// @route    GET api/client
 // @desc     Get one client
 // @access   Private
 router.get("/:clientId", isCompanyAdmin, async (req, res) => {
@@ -34,7 +38,7 @@ router.get("/:clientId", isCompanyAdmin, async (req, res) => {
   }
 });
 
-// @route    POST api/client
+// @route    GET api/client
 // @desc     Get all clients
 // @access   Private
 router.get("/", isCompanyAdmin, async (req, res) => {
@@ -51,6 +55,78 @@ router.get("/", isCompanyAdmin, async (req, res) => {
 });
 
 // @route    POST api/client
+// @desc     Create a new client
+// @access   Private
+router.post("/client", [auth, isCompanyAdmin], async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    companyName,
+    companyLogo,
+    companyEmail,
+    companyWebsite,
+    country,
+    position,
+  } = req.body;
+
+  try {
+    const isClientExist = await Clients.findOne({ email: email });
+
+    if (isClientExist) {
+      return res.status(500).send({
+        error: "Error",
+        message: "Client already exists",
+      });
+    }
+
+    // create a new client
+
+    // getting client number
+    const startingClientNumber = 32; // number of clients created before the system;
+
+    // getting stored clients
+    const clients = await Clients.find();
+    const nextClientNumber =
+      startingClientNumber + parseInt(clients.length) + 1; // Determine the next client number
+
+    const clientNumber = formattedNumberWithPadding(nextClientNumber);
+
+    const clientPassword = `${firstName.toLowerCase()}${phone.slice(-4)}`;
+
+    const newClient = new Clients({
+      firstName,
+      lastName,
+      email,
+      phone,
+      companyName,
+      companyLogo,
+      companyEmail,
+      companyWebsite,
+      country,
+      position,
+      clientNumber,
+      projects: [],
+      payments: [],
+      password: `${clientPassword.trim()}`, // cleint password will be first name + last 4 digits of phone number
+    });
+
+    const savedClient = await newClient.save();
+    const clientId = savedClient._id;
+    return res.status(200).send({
+      message: "Client created successfully",
+      clientId,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      error: "Error",
+      message: error.message,
+    });
+  }
+});
+
+// @route    PUT api/client
 // @desc     Change user password
 // @access   Private
 router.put("/user/password/:clientId", auth, async (req, res) => {
@@ -110,7 +186,7 @@ router.put("/user/password/:clientId", auth, async (req, res) => {
   }
 });
 
-// @route    POST api/client
+// @route    PUT api/client
 // @desc     edit user profile from user side
 // @access   Private
 router.put("/profile/:clientId", auth, async (req, res) => {
@@ -224,7 +300,7 @@ router.put("/admin/:clientId", isCompanyAdmin, async (req, res) => {
   }
 });
 
-// @route    POST api/client
+// @route    DELETE api/client
 // @desc     delete client
 // @access   Private
 router.delete("/:clientId", isCompanyAdmin, async (req, res) => {
