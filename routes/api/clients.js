@@ -116,7 +116,7 @@ router.post("/client", [auth, isCompanyAdmin], async (req, res) => {
     const clientId = savedClient._id;
     return res.status(200).send({
       message: "Client created successfully",
-      clientId,
+      client: newClient,
     });
   } catch (error) {
     return res.status(500).send({
