@@ -69,6 +69,7 @@ router.post("/client", [auth, isCompanyAdmin], async (req, res) => {
     companyWebsite,
     country,
     position,
+    avatar,
   } = req.body;
 
   try {
@@ -107,6 +108,7 @@ router.post("/client", [auth, isCompanyAdmin], async (req, res) => {
       country,
       position,
       clientNumber,
+      avatar,
       projects: [],
       payments: [],
       password: `${clientPassword.trim()}`, // cleint password will be first name + last 4 digits of phone number
