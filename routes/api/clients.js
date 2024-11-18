@@ -284,12 +284,10 @@ router.put("/admin/:clientId", isCompanyAdmin, async (req, res) => {
     if (bankDetails) updateFields.bankDetails = bankDetails;
     if (feedback) updateFields.feedback = feedback;
 
-    await Client.updateOne(
+    await Client.updateMany(
       { _id: clientId },
       {
-        $set: {
-          updateFields,
-        },
+        $set: updateFields,
       }
     );
 
